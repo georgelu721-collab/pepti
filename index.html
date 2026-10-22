@@ -98,9 +98,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .cta-row { display: flex; flex-wrap: wrap; gap: .9rem; }
 .hero-art { position: relative; justify-self: center; perspective: 900px; width: min(100%, 520px); aspect-ratio: 520 / 690; max-width: 100%; }
 .hero-art .tilt { position: relative; z-index: 1; width: 100%; height: 100%; transform: rotateY(var(--ry, 0deg)) rotateX(var(--rx, 0deg)) translateY(var(--float, 0px)); transition: transform .25s ease-out; transform-style: preserve-3d; }
-.hero-art img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover;
-  -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
-          mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); }
+.panel-img { position: relative; width: 100%; height: 100%; overflow: hidden; background: #000;
+  clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%); animation: wipe 1.1s cubic-bezier(.7,0,.2,1) .35s both; }
+@keyframes wipe { from { clip-path: polygon(9% 100%, 100% 100%, 91% 100%, 0 100%); } to { clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%); } }
+.panel-img img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); animation: settle 1.6s cubic-bezier(.2,.8,.2,1) .35s both; }
+@keyframes settle { from { transform: scale(1.35); } to { transform: scale(1.04); } }
+.corner { position: absolute; width: 38px; height: 38px; border: 2px solid var(--copper); z-index: 3; pointer-events: none; animation: pop .5s cubic-bezier(.2,1.6,.4,1) 1.2s both; }
+.corner.tl { top: -10px; left: 4%; border-right: 0; border-bottom: 0; }
+.corner.br { bottom: -10px; right: 4%; border-left: 0; border-top: 0; }
+@keyframes pop { from { transform: scale(0); } to { transform: none; } }
 .kanji { position: absolute; right: 2%; top: 4%; z-index: 2; font: 600 2.2rem/1 serif; color: var(--copper); opacity: .8; }
 
 .specbar { border-block: 1px solid var(--line); background: var(--ink-2); position: relative; z-index: 1; }
@@ -237,8 +243,7 @@ footer .wrap { display: grid; gap: 1.4rem; }
 .hero h1 .word { display: block; }
 .hero h1 .ch { display: inline-block; animation: slam .7s cubic-bezier(.2,1.4,.4,1) both; animation-delay: calc(var(--i) * 70ms + .1s); }
 @keyframes slam { from { transform: translateY(-40%) skewX(-12deg) scale(1.3); filter: blur(6px); } to { transform: none; filter: none; } }
-.glint { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(105deg, transparent 40%, rgba(255,220,190,.18) 50%, transparent 60%); background-size: 250% 100%; animation: glint 5s ease-in-out infinite; mix-blend-mode: screen;
-  -webkit-mask-image: radial-gradient(closest-side, #000 60%, transparent 100%); mask-image: radial-gradient(closest-side, #000 60%, transparent 100%); }
+.glint { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(105deg, transparent 40%, rgba(255,220,190,.2) 50%, transparent 60%); background-size: 250% 100%; animation: glint 4.5s ease-in-out 1.6s infinite; mix-blend-mode: screen; }
 @keyframes glint { 0%, 55% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
 .progress { height: 2px; background: transparent; }
 .progress i { display: block; height: 100%; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--p, 0)); background: linear-gradient(90deg, var(--copper), var(--copper-hi)); }
@@ -268,7 +273,55 @@ footer .wrap { display: grid; gap: 1.4rem; }
 .btn-solid { box-shadow: 0 0 0 rgba(212,115,58,0); }
 .btn-solid:hover { transform: translateY(-2px); }
 
+/* Claws */
+.claws { position: absolute; left: -2%; top: 8%; width: min(46vw, 520px); height: auto; z-index: 0; pointer-events: none; opacity: .13; overflow: visible; }
+.claws path { fill: none; stroke: var(--copper); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 320; stroke-dashoffset: 320; animation: claw .45s cubic-bezier(.7,0,.3,1) forwards; }
+.claws path { animation-delay: calc(.9s + var(--d, 0s)); }
+@keyframes claw { to { stroke-dashoffset: 0; } }
+.hero .wrap > .hero-copy, .hero .wrap > .hero-art { position: relative; z-index: 1; }
+
+/* Intro splash */
+.intro { position: fixed; inset: 0; z-index: 50; background: var(--ink); display: grid; place-content: center; justify-items: center; gap: .4rem; pointer-events: none;
+  animation: introOut .7s cubic-bezier(.7,0,.2,1) 1s forwards; }
+.intro-k { font: 700 5rem/1 serif; color: var(--copper); animation: kIn .5s cubic-bezier(.2,1.5,.4,1) both; }
+.intro-w { font: 900 italic 2.4rem/1 var(--display); letter-spacing: .3em; padding-left: .3em; animation: wIn .6s ease-out .2s both; }
+@keyframes kIn { from { transform: scale(2.2) rotate(-20deg); opacity: 0; } }
+@keyframes wIn { from { letter-spacing: 1em; opacity: 0; } }
+@keyframes introOut { to { clip-path: inset(0 0 100% 0); visibility: hidden; } }
+.hero h1 .ch { animation-delay: calc(var(--i) * 70ms + 1.15s); }
+
+/* Cursor ring */
+.cursor { position: fixed; left: 0; top: 0; width: 34px; height: 34px; margin: -17px 0 0 -17px; border: 1.5px solid var(--copper); border-radius: 50%; z-index: 60; pointer-events: none; opacity: 0; transition: width .2s, height .2s, margin .2s, background .2s, opacity .2s; }
+.cursor.live { opacity: 1; }
+.cursor.big { width: 64px; height: 64px; margin: -32px 0 0 -32px; background: rgba(212,115,58,.15); }
+
+/* Showcase */
+.showcase { height: 280vh; position: relative; border-bottom: 1px solid var(--line); }
+.stick { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: grid; place-items: center; }
+.sc-kanji { position: absolute; font: 700 min(80vh, 90vw)/1 serif; color: var(--copper); opacity: .07; transform: rotate(calc(var(--sp, 0) * 90deg)) scale(calc(.8 + var(--sp, 0) * .4)); }
+.sc-can { width: min(34vh, 58vw); aspect-ratio: 258 / 580; max-width: 100%; transform: rotate(calc(-14deg + var(--sp, 0) * 28deg)) scale(calc(.85 + var(--sp, 0) * .25)); }
+.sc-can img { width: 100%; height: 100%; object-fit: cover; clip-path: inset(0 round 18px); }
+.sc-calls { list-style: none; margin: 0; padding: 0; position: absolute; inset: 0; pointer-events: none; }
+.sc-calls li { position: absolute; display: grid; gap: .3rem; transition: transform .6s cubic-bezier(.2,.8,.2,1), opacity .4s; opacity: 0; transform: translateY(40px) skewY(4deg); }
+.sc-calls li.on { opacity: 1; transform: none; }
+.sc-calls li:nth-child(1) { left: max(16px, 6vw); top: 22%; }
+.sc-calls li:nth-child(2) { right: max(16px, 6vw); top: 42%; text-align: right; }
+.sc-calls li:nth-child(3) { left: max(16px, 8vw); bottom: 16%; }
+.sc-calls b { font: 900 italic clamp(3rem, 9vw, 7.5rem)/.85 var(--display); color: var(--bone); }
+.sc-calls span { font: 600 .8rem/1 var(--tech); letter-spacing: .24em; text-transform: uppercase; color: var(--copper); }
+@media (max-width: 700px) {
+  .sc-can { width: min(30vh, 46vw); margin-bottom: 24vh; }
+  .sc-calls li, .sc-calls li:nth-child(n) { left: 16px; right: 16px; top: auto; bottom: 12%; text-align: center; justify-items: center; }
+  .sc-calls li.on:not(.cur) { opacity: 0; transform: translateY(-30px); }
+}
+.sc-meter { position: absolute; bottom: 6%; left: 50%; width: 140px; margin-left: -70px; height: 2px; background: var(--line); }
+.sc-meter i { display: block; height: 100%; background: var(--copper); transform-origin: 0 50%; transform: scaleX(var(--sp, 0)); }
+
 @media (prefers-reduced-motion: reduce) {
+  .intro, .cursor { display: none; }
+  .panel-img, .panel-img img, .corner, .claws path { animation: none !important; }
+  .claws path { stroke-dashoffset: 0; }
+  .sc-calls li { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
   .ticker-track, .hero h1 .ch, .glint { animation: none !important; }
   .reveal { transform: none !important; }
@@ -277,6 +330,8 @@ footer .wrap { display: grid; gap: 1.4rem; }
 </head>
 <body>
 
+<div class="intro" id="intro" aria-hidden="true"><span class="intro-k">力</span><span class="intro-w">PEPTI</span></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
 <header class="nav">
   <div class="wrap">
     <a class="wordmark" href="#top" aria-label="Pepti home">PEPTI</a>
@@ -296,6 +351,9 @@ footer .wrap { display: grid; gap: 1.4rem; }
     <canvas class="fizz" id="fizz" aria-hidden="true"></canvas>
     <div class="spot" aria-hidden="true"></div>
     <div class="wrap">
+      <svg class="claws" viewBox="0 0 300 300" aria-hidden="true">
+        <path d="M70 290 210 10"/><path style="--d:.1s" d="M130 295 265 25"/><path style="--d:.2s" d="M190 290 300 70"/>
+      </svg>
       <div class="hero-copy">
         <p class="label">HMB infused · Strength cola</p>
         <h1><span class="word" aria-label="Pepti"><span class="ch" style="--i:0">P</span><span class="ch" style="--i:1">E</span><span class="ch" style="--i:2">P</span><span class="ch" style="--i:3">T</span><span class="ch" style="--i:4">I</span></span><span class="slash">Strength Cola</span></h1>
@@ -310,8 +368,11 @@ footer .wrap { display: grid; gap: 1.4rem; }
       <div class="hero-art">
         <span class="kanji" aria-hidden="true" title="chikara: strength">力</span>
         <div class="tilt" id="tilt">
-          <img src="assets/pepti-lineup.jpg" width="520" height="690" alt="A Pepti Strength Cola bottle and can, both black with copper accents, beaded with condensation.">
-          <span class="glint" aria-hidden="true"></span>
+          <div class="panel-img">
+            <img src="assets/pepti-lineup.jpg" width="520" height="690" alt="A Pepti Strength Cola bottle and can, both black with copper accents, beaded with condensation.">
+            <span class="glint" aria-hidden="true"></span>
+          </div>
+          <span class="corner tl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
         </div>
       </div>
     </div>
@@ -337,6 +398,19 @@ footer .wrap { display: grid; gap: 1.4rem; }
       <p class="label">In every bottle and can</p>
       <p class="grams-num" id="grams-num">3G</p>
       <p class="grams-sub">of HMB. Full dose. No scoops, no pills, no shaker.</p>
+    </div>
+  </section>
+
+  <section class="showcase" id="showcase" aria-label="What's in the can">
+    <div class="stick">
+      <span class="sc-kanji" aria-hidden="true">力</span>
+      <div class="sc-can"><img src="assets/pepti-can.jpg" width="258" height="580" alt="The Pepti Strength Cola can." loading="lazy"></div>
+      <ol class="sc-calls">
+        <li class="on"><b>3,000 mg</b><span>HMB per can</span></li>
+        <li><b>0 g</b><span>Sugar. Zero.</span></li>
+        <li><b>375 mL</b><span>Ice-cold cola</span></li>
+      </ol>
+      <div class="sc-meter" aria-hidden="true"><i></i></div>
     </div>
   </section>
 
@@ -542,30 +616,40 @@ footer .wrap { display: grid; gap: 1.4rem; }
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(pointer: fine)').matches;
 
-  // Carbonation: bubbles rising through the hero
+  // Carbonation: bubbles rise through the hero; tap or click to burst more
   (function () {
     var c = document.getElementById('fizz'), hero = document.getElementById('hero');
     if (!c || reduce) return;
     var ctx = c.getContext('2d'), dpr = Math.min(window.devicePixelRatio || 1, 2), W, H, bubbles = [], visible = true;
     function size() { W = hero.offsetWidth; H = hero.offsetHeight; c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
-    function make(y) { return { x: Math.random() * W, y: y == null ? H + 10 : y, r: Math.random() * 2.6 + .6, v: Math.random() * .9 + .35, w: Math.random() * Math.PI * 2, hot: Math.random() < .35 }; }
-    size(); for (var i = 0; i < 90; i++) bubbles.push(make(Math.random() * H));
-    window.addEventListener('resize', size);
+    function make(y) { return { x: Math.random() * W, y: y == null ? H + 10 : y, r: Math.random() * 2.6 + .6, v: Math.random() * .9 + .35, vx: 0, vy: 0, w: Math.random() * 6.28, hot: Math.random() < .35 }; }
+    size(); for (var i = 0; i < 110; i++) bubbles.push(make(Math.random() * H));
+    addEventListener('resize', size);
     new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(hero);
     var mx = -999, my = -999;
     hero.addEventListener('pointermove', function (e) { var r = hero.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
     hero.addEventListener('pointerleave', function () { mx = my = -999; });
+    hero.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('a, button')) return;
+      var r = hero.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      for (var k = 0; k < 36; k++) {
+        var a = Math.random() * 6.28, sp = Math.random() * 7 + 2, b = make();
+        b.x = x; b.y = y; b.vx = Math.cos(a) * sp; b.vy = Math.sin(a) * sp; b.r = Math.random() * 4 + 1; b.hot = Math.random() < .7; b.burst = true;
+        bubbles.push(b);
+      }
+    });
     (function tick() {
       if (visible) {
         ctx.clearRect(0, 0, W, H);
-        for (var i = 0; i < bubbles.length; i++) {
+        for (var i = bubbles.length - 1; i >= 0; i--) {
           var b = bubbles[i];
-          b.y -= b.v * (1 + b.r * .25); b.w += .03; b.x += Math.sin(b.w) * .3;
-          var dx = b.x - mx, dy = b.y - my, d = dx * dx + dy * dy;
-          if (d < 6400) { b.x += dx * .04; b.y += dy * .02; }
-          if (b.y < -10) bubbles[i] = make();
+          b.vx *= .93; b.vy *= .93;
+          b.y -= b.v * (1 + b.r * .25) - b.vy; b.x += b.vx + Math.sin(b.w += .03) * .3;
+          var dx = b.x - mx, dy = b.y - my;
+          if (dx * dx + dy * dy < 6400) { b.x += dx * .05; b.y += dy * .03; }
+          if (b.y < -10) { if (b.burst) { bubbles.splice(i, 1); continue; } bubbles[i] = make(); }
           ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 6.283);
-          ctx.strokeStyle = b.hot ? 'rgba(240,149,90,.55)' : 'rgba(237,230,222,.28)';
+          ctx.strokeStyle = b.hot ? 'rgba(240,149,90,.6)' : 'rgba(237,230,222,.3)';
           ctx.lineWidth = 1; ctx.stroke();
         }
       }
@@ -583,6 +667,62 @@ footer .wrap { display: grid; gap: 1.4rem; }
       tilt.style.setProperty('--ry', (x - .5) * 16 + 'deg'); tilt.style.setProperty('--rx', (.5 - y) * 10 + 'deg');
     });
     hero.addEventListener('pointerleave', function () { tilt.style.setProperty('--ry', '0deg'); tilt.style.setProperty('--rx', '0deg'); });
+  })();
+
+  // Intro splash removes itself
+  setTimeout(function () { var el = document.getElementById('intro'); if (el) el.remove(); }, reduce ? 0 : 1900);
+
+  // Cursor ring + magnetic buttons (mouse only)
+  if (fine && !reduce) {
+    var cur = document.getElementById('cursor'), cx = -100, cy = -100, tx = -100, ty = -100;
+    addEventListener('pointermove', function (e) { tx = e.clientX; ty = e.clientY; cur.classList.add('live'); });
+    document.addEventListener('pointerleave', function () { cur.classList.remove('live'); });
+    document.querySelectorAll('a, button, summary, .benefit, .format').forEach(function (el) {
+      el.addEventListener('pointerenter', function () { cur.classList.add('big'); });
+      el.addEventListener('pointerleave', function () { cur.classList.remove('big'); });
+    });
+    (function follow() { cx += (tx - cx) * .2; cy += (ty - cy) * .2; cur.style.transform = 'translate(' + cx + 'px,' + cy + 'px)'; requestAnimationFrame(follow); })();
+    document.querySelectorAll('.btn').forEach(function (btn) {
+      btn.addEventListener('pointermove', function (e) {
+        var r = btn.getBoundingClientRect();
+        btn.style.transform = 'translate(' + (e.clientX - r.left - r.width / 2) * .25 + 'px,' + (e.clientY - r.top - r.height / 2) * .35 + 'px)';
+      });
+      btn.addEventListener('pointerleave', function () { btn.style.transform = ''; });
+    });
+  }
+
+  // Labels decode like a readout when they scroll into view
+  if (!reduce && 'IntersectionObserver' in window) {
+    var glyphs = '力HMB0123456789#/+×';
+    var so = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return; so.unobserve(e.target);
+        var el = e.target, final = el.textContent, n = 0;
+        var iv = setInterval(function () {
+          n += 1;
+          el.textContent = final.split('').map(function (ch, i) {
+            return ch === ' ' || i < n ? ch : glyphs[(Math.random() * glyphs.length) | 0];
+          }).join('');
+          if (n >= final.length) { clearInterval(iv); el.textContent = final; }
+        }, 28);
+      });
+    }, { threshold: 1 });
+    document.querySelectorAll('.label').forEach(function (el) { if (el.tagName !== 'LABEL') so.observe(el); });
+  }
+
+  // Can showcase: scroll spins the can and steps through the callouts
+  (function () {
+    var sec = document.getElementById('showcase'), calls = sec.querySelectorAll('.sc-calls li');
+    function upd() {
+      var r = sec.getBoundingClientRect(), total = sec.offsetHeight - innerHeight;
+      var p = Math.max(0, Math.min(1, -r.top / total));
+      sec.style.setProperty('--sp', reduce ? .5 : p);
+      var idx = Math.min(calls.length - 1, Math.floor(p * calls.length * .999));
+      calls.forEach(function (li, i) { li.classList.toggle('on', reduce || i <= idx); li.classList.toggle('cur', i === idx); });
+      var tilt = document.getElementById('tilt');
+      if (!reduce && scrollY < innerHeight * 1.2) tilt.style.setProperty('--float', scrollY * .12 + 'px');
+    }
+    addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
   })();
 
   // Benefit cards: glow follows the pointer
