@@ -96,14 +96,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .hero-copy .tag { font: 600 0.95rem/1.6 var(--tech); letter-spacing: .3em; text-transform: uppercase; color: var(--muted); font-style: italic; }
 .hero-copy .tag b { color: var(--bone); font-weight: 600; }
 .cta-row { display: flex; flex-wrap: wrap; gap: .9rem; }
-.hero-art { position: relative; justify-self: center; width: min(100%, 520px); aspect-ratio: 520 / 690; max-width: 100%; }
+.hero-art { position: relative; justify-self: center; perspective: 900px; width: min(100%, 520px); aspect-ratio: 520 / 690; max-width: 100%; }
+.hero-art .tilt { position: relative; z-index: 1; width: 100%; height: 100%; transform: rotateY(var(--ry, 0deg)) rotateX(var(--rx, 0deg)) translateY(var(--float, 0px)); transition: transform .25s ease-out; transform-style: preserve-3d; }
 .hero-art img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover;
   -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
           mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); }
-.enso { position: absolute; inset: -6% -10%; width: 120%; height: 112%; z-index: 0; }
-.enso circle { fill: none; stroke: var(--copper); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 560 1000; opacity: .55; transform-origin: center; transform: rotate(-70deg); animation: draw 1.6s cubic-bezier(.6,.05,.2,1) both; }
-.enso circle.thin { stroke-width: 2; opacity: .35; stroke-dasharray: 420 1000; transform: rotate(120deg); animation-delay: .25s; }
-@keyframes draw { from { stroke-dashoffset: 560; } to { stroke-dashoffset: 0; } }
 .kanji { position: absolute; right: 2%; top: 4%; z-index: 2; font: 600 2.2rem/1 serif; color: var(--copper); opacity: .8; }
 
 .specbar { border-block: 1px solid var(--line); background: var(--ink-2); position: relative; z-index: 1; }
@@ -122,10 +119,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 /* Ticker */
 .ticker { overflow: hidden; border-bottom: 1px solid var(--line); padding-block: 1.1rem; }
-.ticker-track { display: flex; width: max-content; animation: slide 28s linear infinite; }
+.ticker-track { display: flex; width: max-content; will-change: transform; }
 .ticker span { font: 900 italic clamp(2rem, 4.5vw, 3.2rem)/1 var(--display); text-transform: uppercase; padding-right: 2.2rem; white-space: nowrap; color: transparent; -webkit-text-stroke: 1px var(--muted); }
 .ticker span:nth-child(3n+2) { color: var(--copper); -webkit-text-stroke: 0; }
-@keyframes slide { to { transform: translateX(-50%); } }
 
 /* Sections */
 section.block { padding-block: clamp(4rem, 9vw, 7rem); }
@@ -143,7 +139,8 @@ section.block { padding-block: clamp(4rem, 9vw, 7rem); }
 .compare .row-top { display: flex; justify-content: space-between; gap: 1rem; font: 500 .8rem/1.3 var(--tech); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .compare .row-top b { color: var(--bone); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bar { height: 14px; background: var(--line); position: relative; overflow: hidden; }
-.bar i { position: absolute; inset: 0 auto 0 0; background: var(--muted); }
+.bar i { position: absolute; inset: 0 auto 0 0; width: var(--w); background: var(--muted); transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
+.compare.armed .bar i { width: 0; }
 .bar.hot i { background: linear-gradient(90deg, var(--copper), var(--copper-hi)); }
 .compare small { color: var(--muted); font-size: .85rem; line-height: 1.5; }
 @media (max-width: 860px) { .science-grid { grid-template-columns: 1fr; } }
@@ -234,9 +231,47 @@ footer .wrap { display: grid; gap: 1.4rem; }
 .foot-top .tag { font: 500 .78rem/1 var(--tech); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
 .disclaimer { font-size: .8rem; color: var(--muted); max-width: 80ch; line-height: 1.55; }
 
+/* Motion layer */
+.fizz { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.spot { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(420px circle at var(--mx, 70%) var(--my, 40%), rgba(212,115,58,.16), transparent 65%); transition: background .1s; }
+.hero h1 .word { display: block; }
+.hero h1 .ch { display: inline-block; animation: slam .7s cubic-bezier(.2,1.4,.4,1) both; animation-delay: calc(var(--i) * 70ms + .1s); }
+@keyframes slam { from { transform: translateY(-40%) skewX(-12deg) scale(1.3); filter: blur(6px); } to { transform: none; filter: none; } }
+.glint { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(105deg, transparent 40%, rgba(255,220,190,.18) 50%, transparent 60%); background-size: 250% 100%; animation: glint 5s ease-in-out infinite; mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(closest-side, #000 60%, transparent 100%); mask-image: radial-gradient(closest-side, #000 60%, transparent 100%); }
+@keyframes glint { 0%, 55% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
+.progress { height: 2px; background: transparent; }
+.progress i { display: block; height: 100%; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--p, 0)); background: linear-gradient(90deg, var(--copper), var(--copper-hi)); }
+.reveal { transition: transform .9s cubic-bezier(.2,.8,.2,1); }
+.reveal.below { transform: translateY(48px); }
+.benefit { position: relative; overflow: hidden; }
+.benefit::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s; background: radial-gradient(300px circle at var(--cx, 50%) var(--cy, 50%), rgba(212,115,58,.18), transparent 70%); }
+.benefit:hover::before { opacity: 1; }
+.benefit > * { position: relative; }
+.benefit:hover .hex { transform: rotate(30deg) scale(1.08); }
+.hex { transition: transform .5s cubic-bezier(.2,1.4,.4,1); }
+.format img { transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+.format:hover img { transform: translateY(-10px) rotate(-2deg); }
+.grams { border-bottom: 1px solid var(--line); padding-block: clamp(3rem, 8vw, 6rem); overflow: hidden; }
+.grams .wrap { display: grid; gap: .6rem; }
+@media (min-width: 861px) {
+  .grams .wrap { grid-template-columns: auto 1fr; column-gap: 3rem; align-items: end; }
+  .grams .label { grid-column: 1 / -1; }
+  .grams-sub { padding-bottom: 1.2em; }
+}
+.grams-num { font: 900 italic clamp(10rem, 38vw, 30rem)/.8 var(--display); letter-spacing: -.03em; margin-left: -.04em;
+  color: transparent; -webkit-text-stroke: 2px var(--copper);
+  background: linear-gradient(90deg, var(--copper) 0 var(--fill, 0%), transparent var(--fill, 0%));
+  -webkit-background-clip: text; background-clip: text; }
+.grams-sub { font: 800 italic clamp(1.6rem, 3.5vw, 2.6rem)/1.05 var(--display); text-transform: uppercase; max-width: 22ch; }
+.btn { position: relative; }
+.btn-solid { box-shadow: 0 0 0 rgba(212,115,58,0); }
+.btn-solid:hover { transform: translateY(-2px); }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .ticker-track, .enso circle { animation: none; }
+  .ticker-track, .hero h1 .ch, .glint { animation: none !important; }
+  .reveal { transform: none !important; }
 }
 </style>
 </head>
@@ -253,14 +288,17 @@ footer .wrap { display: grid; gap: 1.4rem; }
     </ul>
     <a class="btn btn-solid" href="#signup">Get first drop</a>
   </div>
+  <div class="progress" aria-hidden="true"><i id="progress"></i></div>
 </header>
 
 <main id="top">
-  <section class="hero">
+  <section class="hero" id="hero">
+    <canvas class="fizz" id="fizz" aria-hidden="true"></canvas>
+    <div class="spot" aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-copy">
         <p class="label">HMB infused · Strength cola</p>
-        <h1>Pepti<span class="slash">Strength Cola</span></h1>
+        <h1><span class="word" aria-label="Pepti"><span class="ch" style="--i:0">P</span><span class="ch" style="--i:1">E</span><span class="ch" style="--i:2">P</span><span class="ch" style="--i:3">T</span><span class="ch" style="--i:4">I</span></span><span class="slash">Strength Cola</span></h1>
         <div class="brush" aria-hidden="true"></div>
         <p class="tag">Infused with HMB. <b>Built for more.</b></p>
         <p class="lede">A cold, sharp cola with <strong>3,000&nbsp;mg of HMB</strong> in every serving. That's the full daily amount used in muscle research, in a drink with zero sugar.</p>
@@ -270,19 +308,18 @@ footer .wrap { display: grid; gap: 1.4rem; }
         </div>
       </div>
       <div class="hero-art">
-        <svg class="enso" viewBox="0 0 200 200" aria-hidden="true">
-          <circle cx="100" cy="100" r="88"></circle>
-          <circle class="thin" cx="100" cy="100" r="80"></circle>
-        </svg>
         <span class="kanji" aria-hidden="true" title="chikara: strength">力</span>
-        <img src="assets/pepti-lineup.jpg" width="520" height="690" alt="A Pepti Strength Cola bottle and can, both black with copper accents, beaded with condensation.">
+        <div class="tilt" id="tilt">
+          <img src="assets/pepti-lineup.jpg" width="520" height="690" alt="A Pepti Strength Cola bottle and can, both black with copper accents, beaded with condensation.">
+          <span class="glint" aria-hidden="true"></span>
+        </div>
       </div>
     </div>
     <div class="specbar">
       <ul class="wrap">
-        <li><strong>3,000 mg</strong><span>HMB per serving</span></li>
+        <li><strong><span data-count="3000">3,000</span> mg</strong><span>HMB per serving</span></li>
         <li><strong>0 g</strong><span>Sugar</span></li>
-        <li><strong>375 mL</strong><span>12.7 fl oz</span></li>
+        <li><strong><span data-count="375">375</span> mL</strong><span>12.7 fl oz</span></li>
         <li><strong>Low</strong><span>Calorie</span></li>
       </ul>
     </div>
@@ -295,10 +332,18 @@ footer .wrap { display: grid; gap: 1.4rem; }
     </div>
   </div>
 
+  <section class="grams" id="grams" aria-label="3 grams of HMB per serving">
+    <div class="wrap">
+      <p class="label">In every bottle and can</p>
+      <p class="grams-num" id="grams-num">3G</p>
+      <p class="grams-sub">of HMB. Full dose. No scoops, no pills, no shaker.</p>
+    </div>
+  </section>
+
   <section class="block" id="hmb">
     <div class="wrap science-grid">
       <div>
-        <div class="head">
+        <div class="head reveal">
           <p class="label">The active ingredient</p>
           <h2>Meet HMB.</h2>
         </div>
@@ -308,20 +353,20 @@ footer .wrap { display: grid; gap: 1.4rem; }
           <p>So we put the full 3 grams in the can. You get it every time you crack one open.</p>
         </div>
       </div>
-      <aside class="compare" aria-label="How much food it takes to reach 3 grams of HMB">
+      <aside class="compare" id="compare" aria-label="How much food it takes to reach 3 grams of HMB">
         <p class="label">Getting to 3 g of HMB</p>
         <h3>Eat it, or drink it.</h3>
         <div class="row">
           <div class="row-top"><span>Leucine needed from food</span><b>≈ 60 g</b></div>
-          <div class="bar"><i style="width:100%"></i></div>
+          <div class="bar"><i style="--w:100%"></i></div>
         </div>
         <div class="row">
           <div class="row-top"><span>Chicken breast to get there</span><b>≈ 2.4 kg</b></div>
-          <div class="bar"><i style="width:100%"></i></div>
+          <div class="bar"><i style="--w:100%"></i></div>
         </div>
         <div class="row">
           <div class="row-top"><span>Pepti to get there</span><b>1 × 375 mL</b></div>
-          <div class="bar hot"><i style="width:14%"></i></div>
+          <div class="bar hot"><i style="--w:6%"></i></div>
         </div>
         <small>Estimates assume ~5% leucine-to-HMB conversion and ~2.5 g leucine per 100 g cooked chicken breast.</small>
       </aside>
@@ -330,12 +375,12 @@ footer .wrap { display: grid; gap: 1.4rem; }
 
   <section class="block benefits" id="benefits">
     <div class="wrap">
-      <div class="head">
+      <div class="head reveal">
         <p class="label">What it's for</p>
         <h2>Fuel. Recover. Repeat.</h2>
       </div>
       <div class="benefit-grid">
-        <article class="benefit">
+        <article class="benefit reveal">
           <svg class="hex" viewBox="0 0 64 72" aria-hidden="true">
             <path class="frame" d="M32 2 61 19v34L32 70 3 53V19z"/>
             <path class="glyph" d="M20 46c0-8 4-12 9-13l3-9c1-3 5-3 6 0l-2 7c6 0 10 5 10 11 0 6-5 9-13 9h-6c-4 0-7-2-7-5z"/>
@@ -343,7 +388,7 @@ footer .wrap { display: grid; gap: 1.4rem; }
           <h3>Supports lean muscle*</h3>
           <p>HMB helps slow the breakdown of muscle protein, so more of your training stays with you. Pair it with real protein and real lifting.</p>
         </article>
-        <article class="benefit">
+        <article class="benefit reveal">
           <svg class="hex" viewBox="0 0 64 72" aria-hidden="true">
             <path class="frame" d="M32 2 61 19v34L32 70 3 53V19z"/>
             <path class="glyph" d="M35 18 22 39h10l-3 15 13-21H32z"/>
@@ -351,7 +396,7 @@ footer .wrap { display: grid; gap: 1.4rem; }
           <h3>Clean energy*</h3>
           <p>All the cola snap with zero sugar, so there's no syrup crash halfway through your session.</p>
         </article>
-        <article class="benefit">
+        <article class="benefit reveal">
           <svg class="hex" viewBox="0 0 64 72" aria-hidden="true">
             <path class="frame" d="M32 2 61 19v34L32 70 3 53V19z"/>
             <path class="glyph" d="M45 31a13 13 0 0 0-24-4m-2 13a13 13 0 0 0 24 4M21 21v6h6m16 18v-6h-6"/>
@@ -365,12 +410,12 @@ footer .wrap { display: grid; gap: 1.4rem; }
 
   <section class="block formats" id="formats">
     <div class="wrap">
-      <div class="head">
+      <div class="head reveal">
         <p class="label">Two ways to carry it</p>
         <h2>Bottle or can.</h2>
       </div>
       <div class="format-grid">
-        <article class="format">
+        <article class="format reveal">
           <img src="assets/pepti-bottle.jpg" width="262" height="670" alt="Pepti Strength Cola in a clear resealable bottle with a black label and copper claw marks." loading="lazy">
           <div class="format-info">
             <h3>The Bottle</h3>
@@ -383,7 +428,7 @@ footer .wrap { display: grid; gap: 1.4rem; }
             </dl>
           </div>
         </article>
-        <article class="format can">
+        <article class="format can reveal">
           <img src="assets/pepti-can.jpg" width="258" height="580" alt="Pepti Strength Cola in a matte black can with a copper brush-stroke ring around the logo." loading="lazy">
           <div class="format-info">
             <h3>The Can</h3>
@@ -417,7 +462,7 @@ footer .wrap { display: grid; gap: 1.4rem; }
         <p class="fine">Dietary supplement. See the product label for full Supplement Facts and ingredients.</p>
       </div>
       <div class="ritual">
-        <div class="head">
+        <div class="head reveal">
           <p class="label">How to drink it</p>
           <h2>One a day. Every day.</h2>
         </div>
@@ -432,7 +477,7 @@ footer .wrap { display: grid; gap: 1.4rem; }
 
   <section class="block faq" id="faq">
     <div class="wrap">
-      <div class="head">
+      <div class="head reveal">
         <p class="label">Questions</p>
         <h2>Straight answers.</h2>
       </div>
@@ -494,6 +539,111 @@ footer .wrap { display: grid; gap: 1.4rem; }
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine = window.matchMedia('(pointer: fine)').matches;
+
+  // Carbonation: bubbles rising through the hero
+  (function () {
+    var c = document.getElementById('fizz'), hero = document.getElementById('hero');
+    if (!c || reduce) return;
+    var ctx = c.getContext('2d'), dpr = Math.min(window.devicePixelRatio || 1, 2), W, H, bubbles = [], visible = true;
+    function size() { W = hero.offsetWidth; H = hero.offsetHeight; c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    function make(y) { return { x: Math.random() * W, y: y == null ? H + 10 : y, r: Math.random() * 2.6 + .6, v: Math.random() * .9 + .35, w: Math.random() * Math.PI * 2, hot: Math.random() < .35 }; }
+    size(); for (var i = 0; i < 90; i++) bubbles.push(make(Math.random() * H));
+    window.addEventListener('resize', size);
+    new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(hero);
+    var mx = -999, my = -999;
+    hero.addEventListener('pointermove', function (e) { var r = hero.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
+    hero.addEventListener('pointerleave', function () { mx = my = -999; });
+    (function tick() {
+      if (visible) {
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < bubbles.length; i++) {
+          var b = bubbles[i];
+          b.y -= b.v * (1 + b.r * .25); b.w += .03; b.x += Math.sin(b.w) * .3;
+          var dx = b.x - mx, dy = b.y - my, d = dx * dx + dy * dy;
+          if (d < 6400) { b.x += dx * .04; b.y += dy * .02; }
+          if (b.y < -10) bubbles[i] = make();
+          ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 6.283);
+          ctx.strokeStyle = b.hot ? 'rgba(240,149,90,.55)' : 'rgba(237,230,222,.28)';
+          ctx.lineWidth = 1; ctx.stroke();
+        }
+      }
+      requestAnimationFrame(tick);
+    })();
+  })();
+
+  // Hero: product tilts toward the pointer, copper spotlight follows it
+  (function () {
+    var hero = document.getElementById('hero'), tilt = document.getElementById('tilt');
+    if (!fine || reduce) return;
+    hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      hero.style.setProperty('--mx', x * 100 + '%'); hero.style.setProperty('--my', y * 100 + '%');
+      tilt.style.setProperty('--ry', (x - .5) * 16 + 'deg'); tilt.style.setProperty('--rx', (.5 - y) * 10 + 'deg');
+    });
+    hero.addEventListener('pointerleave', function () { tilt.style.setProperty('--ry', '0deg'); tilt.style.setProperty('--rx', '0deg'); });
+  })();
+
+  // Benefit cards: glow follows the pointer
+  document.querySelectorAll('.benefit').forEach(function (el) {
+    el.addEventListener('pointermove', function (e) {
+      var r = el.getBoundingClientRect();
+      el.style.setProperty('--cx', e.clientX - r.left + 'px'); el.style.setProperty('--cy', e.clientY - r.top + 'px');
+    });
+  });
+
+  // Reveal on scroll (content stays visible; it only slides into place)
+  if (!reduce && 'IntersectionObserver' in window) {
+    var ro = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.remove('below'); ro.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el, i) {
+      if (el.getBoundingClientRect().top > window.innerHeight) { el.classList.add('below'); el.style.transitionDelay = (i % 3) * 90 + 'ms'; ro.observe(el); }
+    });
+
+    // Count-up numbers
+    var co = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return; co.unobserve(e.target);
+        var el = e.target, end = +el.dataset.count, t0 = performance.now();
+        (function step(t) {
+          var k = Math.min((t - t0) / 1400, 1), v = Math.round(end * (1 - Math.pow(1 - k, 3)));
+          el.textContent = v.toLocaleString('en-US'); if (k < 1) requestAnimationFrame(step);
+        })(t0);
+      });
+    });
+    document.querySelectorAll('[data-count]').forEach(function (el) { co.observe(el); });
+
+    // Comparison bars grow when they come into view
+    var cmp = document.getElementById('compare');
+    if (cmp.getBoundingClientRect().top > window.innerHeight) {
+      cmp.classList.add('armed');
+      var bo = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { cmp.classList.remove('armed'); bo.disconnect(); } }, { threshold: .4 });
+      bo.observe(cmp);
+    }
+  }
+
+  // Scroll-linked: progress bar, ticker speed, 3G fill
+  (function () {
+    var bar = document.getElementById('progress'), track = document.querySelector('.ticker-track'),
+        grams = document.getElementById('grams-num'), x = 0, last = window.scrollY, boost = 0;
+    function onScroll() {
+      var max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.setProperty('--p', max > 0 ? scrollY / max : 0);
+      var r = grams.getBoundingClientRect(), k = (innerHeight - r.top) / (innerHeight * .8 + r.height * .5);
+      grams.style.setProperty('--fill', Math.max(0, Math.min(1, k)) * 100 + '%');
+    }
+    addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    if (reduce) { grams.style.setProperty('--fill', '100%'); return; }
+    (function loop() {
+      var y = window.scrollY; boost = boost * .92 + Math.abs(y - last) * .08; last = y;
+      x -= .6 + Math.min(boost, 40) * .5;
+      var half = track.scrollWidth / 2; if (-x >= half) x += half;
+      track.style.transform = 'translateX(' + x + 'px) skewX(' + (-Math.min(boost, 30) * .4) + 'deg)';
+      requestAnimationFrame(loop);
+    })();
+  })();
   // Signup is front-end only for now. Connect it to an email service before launch.
   document.getElementById('signup-form').addEventListener('submit', function (e) {
     e.preventDefault();
