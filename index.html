@@ -96,17 +96,14 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .hero-copy .tag { font: 600 0.95rem/1.6 var(--tech); letter-spacing: .3em; text-transform: uppercase; color: var(--muted); font-style: italic; }
 .hero-copy .tag b { color: var(--bone); font-weight: 600; }
 .cta-row { display: flex; flex-wrap: wrap; gap: .9rem; }
-.hero-art { position: relative; justify-self: center; perspective: 900px; width: min(100%, 520px); aspect-ratio: 520 / 690; max-width: 100%; }
+.hero-art { position: relative; justify-self: center; perspective: 900px; width: min(100%, 520px); aspect-ratio: 478 / 649; max-width: 100%; }
 .hero-art .tilt { position: relative; z-index: 1; width: 100%; height: 100%; transform: rotateY(var(--ry, 0deg)) rotateX(var(--rx, 0deg)) translateY(var(--float, 0px)); transition: transform .25s ease-out; transform-style: preserve-3d; }
-.panel-img { position: relative; width: 100%; height: 100%; overflow: hidden; background: #000;
-  clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%); animation: wipe 1.1s cubic-bezier(.7,0,.2,1) .35s both; }
-@keyframes wipe { from { clip-path: polygon(9% 100%, 100% 100%, 91% 100%, 0 100%); } to { clip-path: polygon(9% 0, 100% 0, 91% 100%, 0 100%); } }
-.panel-img img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); animation: settle 1.6s cubic-bezier(.2,.8,.2,1) .35s both; }
-@keyframes settle { from { transform: scale(1.35); } to { transform: scale(1.04); } }
-.corner { position: absolute; width: 38px; height: 38px; border: 2px solid var(--copper); z-index: 3; pointer-events: none; animation: pop .5s cubic-bezier(.2,1.6,.4,1) 1.2s both; }
-.corner.tl { top: -10px; left: 4%; border-right: 0; border-bottom: 0; }
-.corner.br { bottom: -10px; right: 4%; border-left: 0; border-top: 0; }
-@keyframes pop { from { transform: scale(0); } to { transform: none; } }
+.bob { position: relative; width: 100%; height: 100%; animation: bob 6s ease-in-out 1.7s infinite; }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+.product { width: 100%; height: 100%; object-fit: contain; animation: rise 1.2s cubic-bezier(.2,.8,.2,1) .4s both; }
+@keyframes rise { from { transform: translateY(70px) scale(.9); opacity: 0; filter: blur(10px); } }
+.hero-art::after { content: ""; position: absolute; left: 4%; right: 4%; bottom: -3%; height: 7%; z-index: 0; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(212,115,58,.28), transparent); animation: rise 1.2s ease-out .6s both; }
 .kanji { position: absolute; right: 2%; top: 4%; z-index: 2; font: 600 2.2rem/1 serif; color: var(--copper); opacity: .8; }
 
 .specbar { border-block: 1px solid var(--line); background: var(--ink-2); position: relative; z-index: 1; }
@@ -172,8 +169,8 @@ section.block { padding-block: clamp(4rem, 9vw, 7rem); }
 .formats { background: var(--ink-2); border-block: 1px solid var(--line); }
 .format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); }
 .format { display: grid; grid-template-columns: minmax(0, 200px) 1fr; gap: 1.5rem; align-items: center; }
-.format img { width: 100%; aspect-ratio: 262 / 670; object-fit: cover; max-width: 100%; }
-.format.can img { aspect-ratio: 258 / 580; }
+.format img { width: 100%; aspect-ratio: 240 / 646; object-fit: contain; object-position: bottom; max-width: 100%; }
+.format.can img { aspect-ratio: 240 / 646; }
 .format-info { display: grid; gap: .9rem; min-width: 0; }
 .format-info p { color: var(--muted); }
 .format dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: .45rem 1rem; font: 500 .8rem/1.4 var(--tech); letter-spacing: .08em; text-transform: uppercase; }
@@ -244,7 +241,8 @@ footer .wrap { display: grid; gap: 1.4rem; }
 .hero h1 .word { display: block; }
 .hero h1 .ch { display: inline-block; animation: slam .7s cubic-bezier(.2,1.4,.4,1) both; animation-delay: calc(var(--i) * 70ms + .1s); }
 @keyframes slam { from { transform: translateY(-40%) skewX(-12deg) scale(1.3); filter: blur(6px); } to { transform: none; filter: none; } }
-.glint { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(105deg, transparent 40%, rgba(255,220,190,.2) 50%, transparent 60%); background-size: 250% 100%; animation: glint 4.5s ease-in-out 1.6s infinite; mix-blend-mode: screen; }
+.glint { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(105deg, transparent 40%, rgba(255,220,190,.2) 50%, transparent 60%); background-size: 250% 100%; animation: glint 4.5s ease-in-out 1.6s infinite; mix-blend-mode: screen;
+  -webkit-mask: url(assets/pepti-lineup.webp) center / contain no-repeat; mask: url(assets/pepti-lineup.webp) center / contain no-repeat; }
 @keyframes glint { 0%, 55% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
 .reveal { transition: transform .9s cubic-bezier(.2,.8,.2,1); }
 .reveal.below { transform: translateY(48px); }
@@ -297,7 +295,7 @@ footer .wrap { display: grid; gap: 1.4rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .intro, .cursor { display: none; }
-  .panel-img, .panel-img img, .corner, .claws path { animation: none !important; }
+  .bob, .product, .hero-art::after, .claws path { animation: none !important; }
   .claws path { stroke-dashoffset: 0; }
   html { scroll-behavior: auto; }
   .ticker-track, .hero h1 .ch, .glint { animation: none !important; }
@@ -344,11 +342,10 @@ footer .wrap { display: grid; gap: 1.4rem; }
       <div class="hero-art">
         <span class="kanji" aria-hidden="true" title="chikara: strength">力</span>
         <div class="tilt" id="tilt">
-          <div class="panel-img">
-            <img src="assets/pepti-lineup.jpg" width="520" height="690" alt="A Pepti Strength Cola bottle and can, both black with copper accents, beaded with condensation.">
+          <div class="bob">
+            <img class="product" src="assets/pepti-lineup.webp" width="478" height="649" alt="A Pepti Strength Cola bottle and can, both black with copper accents, beaded with condensation.">
             <span class="glint" aria-hidden="true"></span>
           </div>
-          <span class="corner tl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
         </div>
       </div>
     </div>
@@ -453,7 +450,7 @@ footer .wrap { display: grid; gap: 1.4rem; }
       </div>
       <div class="format-grid">
         <article class="format reveal">
-          <img src="assets/pepti-bottle.jpg" width="262" height="670" alt="Pepti Strength Cola in a clear resealable bottle with a black label and copper claw marks." loading="lazy">
+          <img src="assets/pepti-bottle.webp" width="240" height="646" alt="Pepti Strength Cola in a clear resealable bottle with a black label and copper claw marks." loading="lazy">
           <div class="format-info">
             <h3>The Bottle</h3>
             <p>Resealable, so it rides in your gym bag and lasts through the whole session.</p>
@@ -466,7 +463,7 @@ footer .wrap { display: grid; gap: 1.4rem; }
           </div>
         </article>
         <article class="format can reveal">
-          <img src="assets/pepti-can.jpg" width="258" height="580" alt="Pepti Strength Cola in a matte black can with a copper brush-stroke ring around the logo." loading="lazy">
+          <img src="assets/pepti-can.webp" width="232" height="551" alt="Pepti Strength Cola in a matte black can with a copper brush-stroke ring around the logo." loading="lazy">
           <div class="format-info">
             <h3>The Can</h3>
             <p>Ice cold, crack and go. The one to grab from the fridge after your last set.</p>
