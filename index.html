@@ -125,7 +125,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 /* Ticker */
 .ticker { overflow: hidden; border-bottom: 1px solid var(--line); padding-block: 1.1rem; }
-.ticker-track { display: flex; width: max-content; will-change: transform; }
+.ticker-track { display: flex; width: max-content; animation: slide 70s linear infinite; }
+@keyframes slide { to { transform: translateX(-50%); } }
 .ticker span { font: 900 italic clamp(2rem, 4.5vw, 3.2rem)/1 var(--display); text-transform: uppercase; padding-right: 2.2rem; white-space: nowrap; color: transparent; -webkit-text-stroke: 1px var(--muted); }
 .ticker span:nth-child(3n+2) { color: var(--copper); -webkit-text-stroke: 0; }
 
@@ -245,8 +246,6 @@ footer .wrap { display: grid; gap: 1.4rem; }
 @keyframes slam { from { transform: translateY(-40%) skewX(-12deg) scale(1.3); filter: blur(6px); } to { transform: none; filter: none; } }
 .glint { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(105deg, transparent 40%, rgba(255,220,190,.2) 50%, transparent 60%); background-size: 250% 100%; animation: glint 4.5s ease-in-out 1.6s infinite; mix-blend-mode: screen; }
 @keyframes glint { 0%, 55% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
-.progress { height: 2px; background: transparent; }
-.progress i { display: block; height: 100%; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--p, 0)); background: linear-gradient(90deg, var(--copper), var(--copper-hi)); }
 .reveal { transition: transform .9s cubic-bezier(.2,.8,.2,1); }
 .reveal.below { transform: translateY(48px); }
 .benefit { position: relative; overflow: hidden; }
@@ -295,33 +294,11 @@ footer .wrap { display: grid; gap: 1.4rem; }
 .cursor.live { opacity: 1; }
 .cursor.big { width: 64px; height: 64px; margin: -32px 0 0 -32px; background: rgba(212,115,58,.15); }
 
-/* Showcase */
-.showcase { height: 280vh; position: relative; border-bottom: 1px solid var(--line); }
-.stick { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: grid; place-items: center; }
-.sc-kanji { position: absolute; font: 700 min(80vh, 90vw)/1 serif; color: var(--copper); opacity: .07; transform: rotate(calc(var(--sp, 0) * 90deg)) scale(calc(.8 + var(--sp, 0) * .4)); }
-.sc-can { width: min(34vh, 58vw); aspect-ratio: 258 / 580; max-width: 100%; transform: rotate(calc(-14deg + var(--sp, 0) * 28deg)) scale(calc(.85 + var(--sp, 0) * .25)); }
-.sc-can img { width: 100%; height: 100%; object-fit: cover; clip-path: inset(0 round 18px); }
-.sc-calls { list-style: none; margin: 0; padding: 0; position: absolute; inset: 0; pointer-events: none; }
-.sc-calls li { position: absolute; display: grid; gap: .3rem; transition: transform .6s cubic-bezier(.2,.8,.2,1), opacity .4s; opacity: 0; transform: translateY(40px) skewY(4deg); }
-.sc-calls li.on { opacity: 1; transform: none; }
-.sc-calls li:nth-child(1) { left: max(16px, 6vw); top: 22%; }
-.sc-calls li:nth-child(2) { right: max(16px, 6vw); top: 42%; text-align: right; }
-.sc-calls li:nth-child(3) { left: max(16px, 8vw); bottom: 16%; }
-.sc-calls b { font: 900 italic clamp(3rem, 9vw, 7.5rem)/.85 var(--display); color: var(--bone); }
-.sc-calls span { font: 600 .8rem/1 var(--tech); letter-spacing: .24em; text-transform: uppercase; color: var(--copper); }
-@media (max-width: 700px) {
-  .sc-can { width: min(30vh, 46vw); margin-bottom: 24vh; }
-  .sc-calls li, .sc-calls li:nth-child(n) { left: 16px; right: 16px; top: auto; bottom: 12%; text-align: center; justify-items: center; }
-  .sc-calls li.on:not(.cur) { opacity: 0; transform: translateY(-30px); }
-}
-.sc-meter { position: absolute; bottom: 6%; left: 50%; width: 140px; margin-left: -70px; height: 2px; background: var(--line); }
-.sc-meter i { display: block; height: 100%; background: var(--copper); transform-origin: 0 50%; transform: scaleX(var(--sp, 0)); }
 
 @media (prefers-reduced-motion: reduce) {
   .intro, .cursor { display: none; }
   .panel-img, .panel-img img, .corner, .claws path { animation: none !important; }
   .claws path { stroke-dashoffset: 0; }
-  .sc-calls li { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
   .ticker-track, .hero h1 .ch, .glint { animation: none !important; }
   .reveal { transform: none !important; }
@@ -343,7 +320,6 @@ footer .wrap { display: grid; gap: 1.4rem; }
     </ul>
     <a class="btn btn-solid" href="#signup">Get first drop</a>
   </div>
-  <div class="progress" aria-hidden="true"><i id="progress"></i></div>
 </header>
 
 <main id="top">
@@ -398,19 +374,6 @@ footer .wrap { display: grid; gap: 1.4rem; }
       <p class="label">In every bottle and can</p>
       <p class="grams-num" id="grams-num">3G</p>
       <p class="grams-sub">of HMB. Full dose. No scoops, no pills, no shaker.</p>
-    </div>
-  </section>
-
-  <section class="showcase" id="showcase" aria-label="What's in the can">
-    <div class="stick">
-      <span class="sc-kanji" aria-hidden="true">力</span>
-      <div class="sc-can"><img src="assets/pepti-can.jpg" width="258" height="580" alt="The Pepti Strength Cola can." loading="lazy"></div>
-      <ol class="sc-calls">
-        <li class="on"><b>3,000 mg</b><span>HMB per can</span></li>
-        <li><b>0 g</b><span>Sugar. Zero.</span></li>
-        <li><b>375 mL</b><span>Ice-cold cola</span></li>
-      </ol>
-      <div class="sc-meter" aria-hidden="true"><i></i></div>
     </div>
   </section>
 
@@ -710,19 +673,13 @@ footer .wrap { display: grid; gap: 1.4rem; }
     document.querySelectorAll('.label').forEach(function (el) { if (el.tagName !== 'LABEL') so.observe(el); });
   }
 
-  // Can showcase: scroll spins the can and steps through the callouts
+  // Product shot drifts slightly as you scroll past the hero
   (function () {
-    var sec = document.getElementById('showcase'), calls = sec.querySelectorAll('.sc-calls li');
-    function upd() {
-      var r = sec.getBoundingClientRect(), total = sec.offsetHeight - innerHeight;
-      var p = Math.max(0, Math.min(1, -r.top / total));
-      sec.style.setProperty('--sp', reduce ? .5 : p);
-      var idx = Math.min(calls.length - 1, Math.floor(p * calls.length * .999));
-      calls.forEach(function (li, i) { li.classList.toggle('on', reduce || i <= idx); li.classList.toggle('cur', i === idx); });
-      var tilt = document.getElementById('tilt');
-      if (!reduce && scrollY < innerHeight * 1.2) tilt.style.setProperty('--float', scrollY * .12 + 'px');
-    }
-    addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
+    var tilt = document.getElementById('tilt');
+    if (reduce) return;
+    addEventListener('scroll', function () {
+      if (scrollY < innerHeight * 1.2) tilt.style.setProperty('--float', scrollY * .12 + 'px');
+    }, { passive: true });
   })();
 
   // Benefit cards: glow follows the pointer
@@ -764,25 +721,15 @@ footer .wrap { display: grid; gap: 1.4rem; }
     }
   }
 
-  // Scroll-linked: progress bar, ticker speed, 3G fill
+  // 3G fills with copper as it scrolls into view
   (function () {
-    var bar = document.getElementById('progress'), track = document.querySelector('.ticker-track'),
-        grams = document.getElementById('grams-num'), x = 0, last = window.scrollY, boost = 0;
+    var grams = document.getElementById('grams-num');
+    if (reduce) { grams.style.setProperty('--fill', '100%'); return; }
     function onScroll() {
-      var max = document.documentElement.scrollHeight - innerHeight;
-      bar.style.setProperty('--p', max > 0 ? scrollY / max : 0);
       var r = grams.getBoundingClientRect(), k = (innerHeight - r.top) / (innerHeight * .8 + r.height * .5);
       grams.style.setProperty('--fill', Math.max(0, Math.min(1, k)) * 100 + '%');
     }
     addEventListener('scroll', onScroll, { passive: true }); onScroll();
-    if (reduce) { grams.style.setProperty('--fill', '100%'); return; }
-    (function loop() {
-      var y = window.scrollY; boost = boost * .92 + Math.abs(y - last) * .08; last = y;
-      x -= .6 + Math.min(boost, 40) * .5;
-      var half = track.scrollWidth / 2; if (-x >= half) x += half;
-      track.style.transform = 'translateX(' + x + 'px) skewX(' + (-Math.min(boost, 30) * .4) + 'deg)';
-      requestAnimationFrame(loop);
-    })();
   })();
   // Signup is front-end only for now. Connect it to an email service before launch.
   document.getElementById('signup-form').addEventListener('submit', function (e) {
