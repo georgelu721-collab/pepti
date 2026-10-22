@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pepti Strength Cola</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Pepti is a zero-sugar strength cola with 3,000 mg of HMB in every 12.7 fl oz serving.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,800;1,900&family=Barlow:wght@400;500;600&family=Chakra+Petch:wght@500;600&display=swap">
+<style>
+/* Layout: one dark gym-floor column; product hero with an ink-brush copper ring, then science, benefits, formats, label, FAQ, list signup. */
+:root {
+  --ink: #0b0a09;          /* page: warm black of the can */
+  --ink-2: #14110f;        /* raised surfaces */
+  --line: #2a241f;         /* hairlines */
+  --bone: #ede6de;         /* wordmark white */
+  --muted: #a39a90;        /* secondary text */
+  --copper: #d4733a;       /* brand copper */
+  --copper-hi: #f0955a;    /* copper highlight */
+  --display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --tech: "Chakra Petch", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --wrap: 1180px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font: 400 1.0625rem/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--copper-hi); outline-offset: 3px; }
+
+.wrap {
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.label {
+  font: 600 0.78rem/1 var(--tech);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--copper);
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 800; font-style: italic; text-transform: uppercase; line-height: 0.92; margin: 0; text-wrap: balance; letter-spacing: 0.005em; }
+h2 { font-size: clamp(2.6rem, 6vw, 4.6rem); }
+h3 { font-size: 1.7rem; }
+p { margin: 0; }
+.lede { color: var(--muted); max-width: 58ch; font-size: 1.125rem; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.6em;
+  font: 600 0.85rem/1 var(--tech); letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 1.05em 1.6em; text-decoration: none; border: 1px solid var(--copper);
+  transition: background .2s, color .2s, transform .2s;
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+.btn-solid { background: var(--copper); color: var(--ink); }
+.btn-solid:hover { background: var(--copper-hi); }
+.btn-ghost { color: var(--bone); }
+.btn-ghost:hover { background: rgba(212,115,58,.12); }
+
+/* Nav */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: rgba(11,10,9,.86); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.85rem; }
+.wordmark { font: 900 italic 1.9rem/1 var(--display); letter-spacing: 0.02em; text-decoration: none; }
+.nav-links { display: flex; gap: 1.75rem; list-style: none; margin: 0; padding: 0; }
+.nav-links a { font: 500 0.78rem/1 var(--tech); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; color: var(--muted); }
+.nav-links a:hover { color: var(--bone); }
+.nav .btn { padding: .8em 1.2em; font-size: .74rem; }
+@media (max-width: 760px) { .nav-links { display: none; } }
+
+/* Hero */
+.hero { position: relative; overflow: hidden; }
+.hero::after { /* wet floor glow */
+  content: ""; position: absolute; inset: auto 0 0; height: 40%;
+  background: radial-gradient(60% 80% at 70% 100%, rgba(212,115,58,.14), transparent 70%);
+  pointer-events: none;
+}
+.hero .wrap { display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 2rem; padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2rem, 4vw, 3.5rem); position: relative; z-index: 1; }
+.hero-copy { display: grid; gap: 1.6rem; min-width: 0; }
+.hero h1 { font-size: clamp(5.5rem, 15vw, 11.5rem); font-weight: 900; line-height: .8; letter-spacing: -0.01em; }
+.hero h1 .slash { display: block; font-size: .3em; font-weight: 800; color: var(--copper); letter-spacing: .08em; margin-top: .35em; line-height: 1; }
+.brush { height: 6px; width: min(340px, 70%); background: linear-gradient(90deg, var(--copper), transparent); clip-path: polygon(0 40%, 100% 0, 92% 100%, 0 70%); }
+.hero-copy .tag { font: 600 0.95rem/1.6 var(--tech); letter-spacing: .3em; text-transform: uppercase; color: var(--muted); font-style: italic; }
+.hero-copy .tag b { color: var(--bone); font-weight: 600; }
+.cta-row { display: flex; flex-wrap: wrap; gap: .9rem; }
+.hero-art { position: relative; justify-self: center; width: min(100%, 520px); aspect-ratio: 520 / 690; max-width: 100%; }
+.hero-art img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover;
+  -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
+          mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); }
+.enso { position: absolute; inset: -6% -10%; width: 120%; height: 112%; z-index: 0; }
+.enso circle { fill: none; stroke: var(--copper); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 560 1000; opacity: .55; transform-origin: center; transform: rotate(-70deg); animation: draw 1.6s cubic-bezier(.6,.05,.2,1) both; }
+.enso circle.thin { stroke-width: 2; opacity: .35; stroke-dasharray: 420 1000; transform: rotate(120deg); animation-delay: .25s; }
+@keyframes draw { from { stroke-dashoffset: 560; } to { stroke-dashoffset: 0; } }
+.kanji { position: absolute; right: 2%; top: 4%; z-index: 2; font: 600 2.2rem/1 serif; color: var(--copper); opacity: .8; }
+
+.specbar { border-block: 1px solid var(--line); background: var(--ink-2); position: relative; z-index: 1; }
+.specbar ul { list-style: none; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); padding-block: 0; }
+.specbar li { padding: 1.4rem 1rem; display: grid; gap: .35rem; border-left: 1px solid var(--line); }
+.specbar li:first-child { border-left: 0; padding-left: 0; }
+.specbar strong { font: 800 italic clamp(1.8rem, 3.6vw, 2.6rem)/1 var(--display); font-variant-numeric: tabular-nums; }
+.specbar span { font: 500 .72rem/1.2 var(--tech); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .hero-art { width: min(100%, 420px); }
+  .specbar ul { grid-template-columns: repeat(2, 1fr); }
+  .specbar li:nth-child(3) { border-left: 0; padding-left: 0; }
+  .specbar li:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+
+/* Ticker */
+.ticker { overflow: hidden; border-bottom: 1px solid var(--line); padding-block: 1.1rem; }
+.ticker-track { display: flex; width: max-content; animation: slide 28s linear infinite; }
+.ticker span { font: 900 italic clamp(2rem, 4.5vw, 3.2rem)/1 var(--display); text-transform: uppercase; padding-right: 2.2rem; white-space: nowrap; color: transparent; -webkit-text-stroke: 1px var(--muted); }
+.ticker span:nth-child(3n+2) { color: var(--copper); -webkit-text-stroke: 0; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* Sections */
+section.block { padding-block: clamp(4rem, 9vw, 7rem); }
+.head { display: grid; gap: 1.1rem; margin-bottom: clamp(2.2rem, 5vw, 3.5rem); }
+
+/* Science */
+.science-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+.science-grid > * { min-width: 0; }
+.science-copy { display: grid; gap: 1.2rem; color: var(--muted); max-width: 60ch; }
+.science-copy strong { color: var(--bone); font-weight: 600; }
+.chem { font-family: var(--tech); color: var(--bone); letter-spacing: .04em; }
+.compare { border: 1px solid var(--line); background: var(--ink-2); padding: clamp(1.4rem, 3vw, 2rem); display: grid; gap: 1.5rem; }
+.compare h3 { font-size: 1.5rem; }
+.compare .row { display: grid; gap: .55rem; }
+.compare .row-top { display: flex; justify-content: space-between; gap: 1rem; font: 500 .8rem/1.3 var(--tech); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.compare .row-top b { color: var(--bone); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bar { height: 14px; background: var(--line); position: relative; overflow: hidden; }
+.bar i { position: absolute; inset: 0 auto 0 0; background: var(--muted); }
+.bar.hot i { background: linear-gradient(90deg, var(--copper), var(--copper-hi)); }
+.compare small { color: var(--muted); font-size: .85rem; line-height: 1.5; }
+@media (max-width: 860px) { .science-grid { grid-template-columns: 1fr; } }
+
+/* Benefits */
+.benefits { border-top: 1px solid var(--line); }
+.benefit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--line); }
+.benefit { padding: clamp(1.6rem, 3vw, 2.4rem); display: grid; gap: 1rem; align-content: start; border-left: 1px solid var(--line); transition: background .25s; }
+.benefit:first-child { border-left: 0; }
+.benefit:hover { background: var(--ink-2); }
+.benefit p { color: var(--muted); }
+.hex { width: 64px; height: 72px; }
+.hex path.frame { fill: none; stroke: var(--copper); stroke-width: 2; }
+.hex .glyph { fill: none; stroke: var(--bone); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 860px) {
+  .benefit-grid { grid-template-columns: 1fr; }
+  .benefit { border-left: 0; border-top: 1px solid var(--line); }
+  .benefit:first-child { border-top: 0; }
+}
+
+/* Formats */
+.formats { background: var(--ink-2); border-block: 1px solid var(--line); }
+.format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); }
+.format { display: grid; grid-template-columns: minmax(0, 200px) 1fr; gap: 1.5rem; align-items: center; }
+.format img { width: 100%; aspect-ratio: 262 / 670; object-fit: cover; max-width: 100%; }
+.format.can img { aspect-ratio: 258 / 580; }
+.format-info { display: grid; gap: .9rem; min-width: 0; }
+.format-info p { color: var(--muted); }
+.format dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: .45rem 1rem; font: 500 .8rem/1.4 var(--tech); letter-spacing: .08em; text-transform: uppercase; }
+.format dt { color: var(--muted); }
+.format dd { margin: 0; font-variant-numeric: tabular-nums; }
+@media (max-width: 860px) { .format-grid { grid-template-columns: 1fr; } }
+@media (max-width: 460px) { .format { grid-template-columns: 120px 1fr; gap: 1rem; } }
+
+/* Label + ritual */
+.label-grid { display: grid; grid-template-columns: minmax(0, 380px) 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+.panel { border: 2px solid var(--bone); padding: 1rem 1.1rem 1.1rem; font-family: var(--body); }
+.panel .title { font: 900 2.2rem/1 var(--display); text-transform: none; border-bottom: 8px solid var(--bone); padding-bottom: .35rem; }
+.panel .serv { display: flex; justify-content: space-between; gap: 1rem; padding-block: .45rem; border-bottom: 1px solid var(--bone); font-size: .95rem; }
+.panel table { width: 100%; border-collapse: collapse; font-size: .95rem; font-variant-numeric: tabular-nums; }
+.panel th, .panel td { padding: .5rem 0; border-bottom: 1px solid var(--line); text-align: left; font-weight: 500; }
+.panel thead th { font: 600 .72rem/1 var(--tech); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); border-bottom: 4px solid var(--bone); }
+.panel td:last-child, .panel th:last-child { text-align: right; }
+.panel tr.key td { color: var(--copper-hi); font-weight: 600; }
+.panel .fine { font-size: .78rem; color: var(--muted); margin-top: .7rem; line-height: 1.45; }
+.ritual { display: grid; gap: 1.6rem; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.steps li { display: grid; grid-template-columns: 7rem 1fr; gap: 1.2rem; padding-block: 1.3rem; border-bottom: 1px solid var(--line); }
+.steps .when { font: 800 italic 1.5rem/1.1 var(--display); text-transform: uppercase; color: var(--copper); }
+.steps p { color: var(--muted); }
+.steps strong { color: var(--bone); font-weight: 600; }
+@media (max-width: 860px) { .label-grid { grid-template-columns: 1fr; } }
+@media (max-width: 460px) { .steps li { grid-template-columns: 1fr; gap: .4rem; } }
+
+/* FAQ */
+.faq { border-top: 1px solid var(--line); }
+.faq-list { display: grid; border-top: 1px solid var(--line); max-width: 860px; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-block: 1.3rem; font: 800 italic 1.5rem/1.15 var(--display); text-transform: uppercase; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font: 500 1.6rem/1 var(--tech); color: var(--copper); transition: transform .2s; flex: none; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { color: var(--muted); padding-bottom: 1.4rem; max-width: 65ch; }
+
+/* Signup */
+.signup { position: relative; overflow: hidden; border-top: 1px solid var(--line); background: radial-gradient(50% 120% at 85% 50%, rgba(212,115,58,.16), transparent 70%), var(--ink); }
+.signup .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: center; }
+.signup .wrap > * { min-width: 0; }
+.signup-copy { display: grid; gap: 1rem; }
+.signup-copy h2 { font-size: clamp(3rem, 8vw, 6rem); }
+form { display: grid; gap: .8rem; }
+.field { display: flex; gap: 0; border: 1px solid var(--copper); background: var(--ink-2); }
+.field input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--bone); font: 500 1rem/1 var(--body); padding: 1.1rem 1rem; }
+.field input::placeholder { color: var(--muted); }
+.field input:focus-visible { outline: none; }
+.field:focus-within { outline: 2px solid var(--copper-hi); outline-offset: 2px; }
+.field button { border: 0; background: var(--copper); color: var(--ink); font: 600 .8rem/1 var(--tech); letter-spacing: .16em; text-transform: uppercase; padding: 0 1.3rem; cursor: pointer; }
+.field button:hover { background: var(--copper-hi); }
+.form-note { font: 500 .8rem/1.4 var(--tech); letter-spacing: .06em; color: var(--muted); min-height: 1.4em; }
+.form-note.ok { color: var(--copper-hi); }
+.big-kanji { position: absolute; right: -2rem; bottom: -4rem; font: 700 22rem/1 serif; color: var(--copper); opacity: .06; pointer-events: none; }
+@media (max-width: 860px) { .signup .wrap { grid-template-columns: 1fr; } }
+
+/* Footer */
+footer { border-top: 1px solid var(--line); padding-block: 2.5rem; }
+footer .wrap { display: grid; gap: 1.4rem; }
+.foot-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+.foot-top .tag { font: 500 .78rem/1 var(--tech); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.disclaimer { font-size: .8rem; color: var(--muted); max-width: 80ch; line-height: 1.55; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ticker-track, .enso circle { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="wordmark" href="#top" aria-label="Pepti home">PEPTI</a>
+    <ul class="nav-links">
+      <li><a href="#hmb">What's HMB</a></li>
+      <li><a href="#benefits">Benefits</a></li>
+      <li><a href="#formats">Bottle &amp; Can</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="btn btn-solid" href="#signup">Get first drop</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="label">HMB infused · Strength cola</p>
+        <h1>Pepti<span class="slash">Strength Cola</span></h1>
+        <div class="brush" aria-hidden="true"></div>
+        <p class="tag">Infused with HMB. <b>Built for more.</b></p>
+        <p class="lede">A cold, sharp cola with <strong>3,000&nbsp;mg of HMB</strong> in every serving. That's the full daily amount used in muscle research, in a drink with zero sugar.</p>
+        <div class="cta-row">
+          <a class="btn btn-solid" href="#signup">Join the first drop</a>
+          <a class="btn btn-ghost" href="#hmb">What is HMB?</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <svg class="enso" viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="100" r="88"></circle>
+          <circle class="thin" cx="100" cy="100" r="80"></circle>
+        </svg>
+        <span class="kanji" aria-hidden="true" title="chikara: strength">力</span>
+        <img src="assets/pepti-lineup.jpg" width="520" height="690" alt="A Pepti Strength Cola bottle and can, both black with copper accents, beaded with condensation.">
+      </div>
+    </div>
+    <div class="specbar">
+      <ul class="wrap">
+        <li><strong>3,000 mg</strong><span>HMB per serving</span></li>
+        <li><strong>0 g</strong><span>Sugar</span></li>
+        <li><strong>375 mL</strong><span>12.7 fl oz</span></li>
+        <li><strong>Low</strong><span>Calorie</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Fuel.</span><span>Recover.</span><span>Repeat.</span><span>Fuel.</span><span>Recover.</span><span>Repeat.</span><span>Fuel.</span><span>Recover.</span><span>Repeat.</span>
+      <span>Fuel.</span><span>Recover.</span><span>Repeat.</span><span>Fuel.</span><span>Recover.</span><span>Repeat.</span><span>Fuel.</span><span>Recover.</span><span>Repeat.</span>
+    </div>
+  </div>
+
+  <section class="block" id="hmb">
+    <div class="wrap science-grid">
+      <div>
+        <div class="head">
+          <p class="label">The active ingredient</p>
+          <h2>Meet HMB.</h2>
+        </div>
+        <div class="science-copy">
+          <p><strong>HMB</strong> is short for <span class="chem">β-hydroxy β-methylbutyrate</span>. Your body makes it from leucine, the amino acid in protein most tied to building muscle.</p>
+          <p>The catch: only about <strong>5% of the leucine</strong> you eat becomes HMB. Studies on strength and recovery use around <strong>3 grams a day</strong>, which is far more than food alone delivers.</p>
+          <p>So we put the full 3 grams in the can. You get it every time you crack one open.</p>
+        </div>
+      </div>
+      <aside class="compare" aria-label="How much food it takes to reach 3 grams of HMB">
+        <p class="label">Getting to 3 g of HMB</p>
+        <h3>Eat it, or drink it.</h3>
+        <div class="row">
+          <div class="row-top"><span>Leucine needed from food</span><b>≈ 60 g</b></div>
+          <div class="bar"><i style="width:100%"></i></div>
+        </div>
+        <div class="row">
+          <div class="row-top"><span>Chicken breast to get there</span><b>≈ 2.4 kg</b></div>
+          <div class="bar"><i style="width:100%"></i></div>
+        </div>
+        <div class="row">
+          <div class="row-top"><span>Pepti to get there</span><b>1 × 375 mL</b></div>
+          <div class="bar hot"><i style="width:14%"></i></div>
+        </div>
+        <small>Estimates assume ~5% leucine-to-HMB conversion and ~2.5 g leucine per 100 g cooked chicken breast.</small>
+      </aside>
+    </div>
+  </section>
+
+  <section class="block benefits" id="benefits">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">What it's for</p>
+        <h2>Fuel. Recover. Repeat.</h2>
+      </div>
+      <div class="benefit-grid">
+        <article class="benefit">
+          <svg class="hex" viewBox="0 0 64 72" aria-hidden="true">
+            <path class="frame" d="M32 2 61 19v34L32 70 3 53V19z"/>
+            <path class="glyph" d="M20 46c0-8 4-12 9-13l3-9c1-3 5-3 6 0l-2 7c6 0 10 5 10 11 0 6-5 9-13 9h-6c-4 0-7-2-7-5z"/>
+          </svg>
+          <h3>Supports lean muscle*</h3>
+          <p>HMB helps slow the breakdown of muscle protein, so more of your training stays with you. Pair it with real protein and real lifting.</p>
+        </article>
+        <article class="benefit">
+          <svg class="hex" viewBox="0 0 64 72" aria-hidden="true">
+            <path class="frame" d="M32 2 61 19v34L32 70 3 53V19z"/>
+            <path class="glyph" d="M35 18 22 39h10l-3 15 13-21H32z"/>
+          </svg>
+          <h3>Clean energy*</h3>
+          <p>All the cola snap with zero sugar, so there's no syrup crash halfway through your session.</p>
+        </article>
+        <article class="benefit">
+          <svg class="hex" viewBox="0 0 64 72" aria-hidden="true">
+            <path class="frame" d="M32 2 61 19v34L32 70 3 53V19z"/>
+            <path class="glyph" d="M45 31a13 13 0 0 0-24-4m-2 13a13 13 0 0 0 24 4M21 21v6h6m16 18v-6h-6"/>
+          </svg>
+          <h3>Recover faster*</h3>
+          <p>HMB is studied for reducing muscle damage after hard training. Less soreness on day two means you're back under the bar sooner.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block formats" id="formats">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">Two ways to carry it</p>
+        <h2>Bottle or can.</h2>
+      </div>
+      <div class="format-grid">
+        <article class="format">
+          <img src="assets/pepti-bottle.jpg" width="262" height="670" alt="Pepti Strength Cola in a clear resealable bottle with a black label and copper claw marks." loading="lazy">
+          <div class="format-info">
+            <h3>The Bottle</h3>
+            <p>Resealable, so it rides in your gym bag and lasts through the whole session.</p>
+            <dl>
+              <dt>Volume</dt><dd>12.7 fl oz · 375 mL</dd>
+              <dt>HMB</dt><dd>3,000 mg</dd>
+              <dt>Sugar</dt><dd>0 g</dd>
+              <dt>Mark</dt><dd>Fuel. Recover. Repeat.</dd>
+            </dl>
+          </div>
+        </article>
+        <article class="format can">
+          <img src="assets/pepti-can.jpg" width="258" height="580" alt="Pepti Strength Cola in a matte black can with a copper brush-stroke ring around the logo." loading="lazy">
+          <div class="format-info">
+            <h3>The Can</h3>
+            <p>Ice cold, crack and go. The one to grab from the fridge after your last set.</p>
+            <dl>
+              <dt>Volume</dt><dd>12.7 fl oz · 375 mL</dd>
+              <dt>HMB</dt><dd>3,000 mg</dd>
+              <dt>Sugar</dt><dd>0 g</dd>
+              <dt>Mark</dt><dd>力 Strength</dd>
+            </dl>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="label">
+    <div class="wrap label-grid">
+      <div class="panel" role="group" aria-label="Per serving facts">
+        <p class="title">Per Serving</p>
+        <div class="serv"><span>Serving size</span><span>1 bottle or can (375 mL)</span></div>
+        <table>
+          <thead><tr><th scope="col">Item</th><th scope="col">Amount</th></tr></thead>
+          <tbody>
+            <tr class="key"><td>HMB</td><td>3,000 mg</td></tr>
+            <tr><td>Total sugars</td><td>0 g</td></tr>
+            <tr><td>Calories</td><td>Low</td></tr>
+            <tr><td>Flavor</td><td>Cola</td></tr>
+          </tbody>
+        </table>
+        <p class="fine">Dietary supplement. See the product label for full Supplement Facts and ingredients.</p>
+      </div>
+      <div class="ritual">
+        <div class="head">
+          <p class="label">How to drink it</p>
+          <h2>One a day. Every day.</h2>
+        </div>
+        <ol class="steps">
+          <li><span class="when">Lift days</span><p>Drink one <strong>within an hour of training</strong>, before or after. Whatever fits your session.</p></li>
+          <li><span class="when">Rest days</span><p>Keep it going. HMB works best taken <strong>consistently</strong>, so have one with a meal.</p></li>
+          <li><span class="when">Stack it</span><p>Pepti fills the HMB gap. Keep hitting <strong>your protein</strong> and sleep, and let the cola handle the rest.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="block faq" id="faq">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">Questions</p>
+        <h2>Straight answers.</h2>
+      </div>
+      <div class="faq-list">
+        <details open>
+          <summary>How much HMB is in Pepti?</summary>
+          <p>3,000 mg (3 grams) in every 12.7 fl oz bottle or can. That's the daily amount most HMB research uses, so one Pepti covers it.</p>
+        </details>
+        <details>
+          <summary>Does it actually taste like cola?</summary>
+          <p>Yes. Pepti is a full cola first: dark, crisp and carbonated, with zero sugar. The HMB is there to work, not to be tasted.</p>
+        </details>
+        <details>
+          <summary>Who is Pepti for?</summary>
+          <p>Anyone who trains and wants to protect the muscle they build: lifters, athletes, and active adults who want more from their training as they get older. Pepti is for adults.</p>
+        </details>
+        <details>
+          <summary>Should I drink more than one a day?</summary>
+          <p>One a day is the serving. It already gives you the 3 grams studied in research, and more isn't shown to work better.</p>
+        </details>
+        <details>
+          <summary>Is it safe to take HMB?</summary>
+          <p>HMB has been studied for decades and is generally well tolerated at around 3 grams a day. If you're pregnant, nursing, taking medication or have a medical condition, check with your doctor first.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="block signup" id="signup">
+    <span class="big-kanji" aria-hidden="true">力</span>
+    <div class="wrap">
+      <div class="signup-copy">
+        <p class="label">First drop</p>
+        <h2>Get on the list.</h2>
+        <p class="lede">Be first to know when Pepti launches, and get early pricing on the first case.</p>
+      </div>
+      <form id="signup-form" novalidate>
+        <label class="label" for="email">Email</label>
+        <div class="field">
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+          <button type="submit">Join</button>
+        </div>
+        <p class="form-note" id="form-note" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <span class="wordmark">PEPTI</span>
+      <span class="tag">HMB Infused · Strength Cola</span>
+    </div>
+    <p class="disclaimer">*These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. Dietary supplement. Best results come with resistance training and adequate protein.</p>
+    <p class="disclaimer">© <span id="year">2026</span> Pepti. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  // Signup is front-end only for now. Connect it to an email service before launch.
+  document.getElementById('signup-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var input = document.getElementById('email');
+    var note = document.getElementById('form-note');
+    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+    note.className = 'form-note' + (ok ? ' ok' : '');
+    note.textContent = ok
+      ? "You're on the list. Watch your inbox for the first drop."
+      : 'Enter a full email address, like name@example.com.';
+    if (ok) input.value = '';
+  });
+</script>
+</body>
+</html>
